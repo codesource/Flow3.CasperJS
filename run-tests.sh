@@ -17,7 +17,7 @@ BASEDIR=$(realpath $SCRIPT_DIR/../../..)
 BREAK_ON_ERROR=1
 
 # The reg-exp used to search for test suites, should probably not be changed
-FILES_REGEXP=".*\/Packages\/Application\/.*Tests\/JavaScript\/Functional\/.*.js"
+FILES_REGEXP=".*\/Packages\/Application\/.*Tests\/JavaScript\/Functional\/.*Test.js"
 
 # Casper executable
 CASPER_BIN=casperjs
