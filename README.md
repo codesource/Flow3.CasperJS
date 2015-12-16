@@ -3,9 +3,9 @@ CasperJS loader for javascript functional testing on Flow3 architecture
 
 ## Installation
 
-The files must be install into Flow3 architecture, under "Build/BuildEssentials/Casper"
+The files must be installed in the Flow3 architecture, under "Build/BuildEssentials/Casper"
 
-Node.js is required to build and run the tests.
+Node.js is required to install the dependencies.
 
 Depending on your installation you might have to create symlinks to some binaries (i.e. phantomjs).
 
