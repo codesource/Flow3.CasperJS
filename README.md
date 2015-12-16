@@ -26,10 +26,10 @@ Edit run-tests.sh and adapt the values to fit your configuration.
 
 Typically you might want to modify the following variables:
 
- * CASPER_BIN - Location of the ```casperjs``` binary
- * CASPER_OPTIONS - Additional CasperJs options
- * BREAK_ON_ERROR - If set to 1 the runner will stop after a failing test
+ * ```CASPER_BIN``` - Location of the ```casperjs``` binary
+ * ```CASPER_OPTIONS``` - Additional CasperJs options
+ * ```BREAK_ON_ERROR``` - If set to 1 the runner will stop after a failing test
 
 By default the runner will look for tests in ```<Package>/Tests/JavaScript/Functional/**/*Test.js```.
 
-This can be changed modifying the FILES_REGEXP variable.
+This can be changed modifying the ```FILES_REGEXP``` variable.
