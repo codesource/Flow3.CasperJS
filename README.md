@@ -72,3 +72,16 @@ Build/BuildEssentials/Casper/run-tests.sh \
     Packages/Application/My.Package/Tests/JavaScript/Functional/MyTest.js
 
 ```
+
+## PhantomJs 1.9.8 warning
+
+A bug in PhantomJs 1.9.8 will cause the following error at the end of the tests:
+
+```
+Unsafe JavaScript attempt to access frame with URL about:blank from frame with URL
+file:///somepath/node_modules/casperjs/bin/bootstrap.js. Domains, protocols and ports must match.
+```
+
+This is a problem related to PhantomJs and does not indicate there is an issue with this script or your tests.
+
+More information can be found here: https://github.com/ariya/phantomjs/issues/12697
