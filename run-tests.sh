@@ -15,17 +15,24 @@ source $SCRIPT_DIR/config.sh
 
 FILES=$(find $BASEDIR -type f -regex "$FILES_REGEXP" | sort -V)
 
-for FILE in $FILES; do
+#for FILE in $FILES; do
+#
+#  $CASPER_BIN test $CASPER_OPTIONS \
+#        --basedir=$BASEDIR \
+#        --libdir=$SCRIPT_DIR/lib \
+#        --pre=$SCRIPT_DIR/lib/bootstrap.js \
+#        --post=$SCRIPT_DIR/lib/post.js \
+#        $FILE
+#
+#  if [[ $BREAK_ON_ERROR != 0 && $? != 0 ]]; then
+#    break;
+#  fi
+#
+#done
 
   $CASPER_BIN test $CASPER_OPTIONS \
-        --includes=$SCRIPT_DIR/lib/bootstrap.js \
         --basedir=$BASEDIR \
         --libdir=$SCRIPT_DIR/lib \
+        --pre=$SCRIPT_DIR/lib/bootstrap.js \
         --post=$SCRIPT_DIR/lib/post.js \
-        $FILE
-
-  if [[ $BREAK_ON_ERROR != 0 && $? != 0 ]]; then
-    break;
-  fi
-
-done
+        $FILES
