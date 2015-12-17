@@ -18,7 +18,7 @@ npm install
 
 ### Setup the configuration
 
-Copy the ```config.sh.dist``` file to ```config.sh```, edit it to your needs and then make it an executable file:
+Copy the ```config.sh.dist``` file to ```config.sh```, edit it to your needs (see below) and then make it an executable file:
 
 ```
 chmod +x config.sh
@@ -28,7 +28,7 @@ Copy the ```options.js.dist``` file to ```options.js``` and edit it to your need
 
 ### Setup the runner script
 
-Edit run-tests.sh and adapt the values to fit your configuration.
+Edit config.sh and adapt the values to fit your configuration.
 
 Typically you might want to modify the following variables:
 
