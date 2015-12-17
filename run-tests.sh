@@ -22,8 +22,6 @@ else
     for FILE in $TMP_FILES; do
         FILES="$FILES $(find $FILE -type f -regex "$FILES_REGEXP" | sort -V)"
     done
-    echo $FILES
-
 fi
 
 $CASPER_BIN test $CASPER_OPTIONS \
