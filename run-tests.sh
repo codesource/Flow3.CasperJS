@@ -13,26 +13,22 @@ source $SCRIPT_DIR/config.sh
 
 # ----- There should be nothing to change below
 
-FILES=$(find $BASEDIR -type f -regex "$FILES_REGEXP" | sort -V)
+if [ -z "$1" ]; then
+    FILES=$(find $BASEDIR -type f -regex "$FILES_REGEXP" | sort -V)
+else
+    # Read the files list from the parameters, expand the wildcards and filter them with the $FILES_REGEXP
+    TMP_FILES=($@)
+    TMP_FILES="${TMP_FILES[@]}"
+    for FILE in $TMP_FILES; do
+        FILES="$FILES $(find $FILE -type f -regex "$FILES_REGEXP" | sort -V)"
+    done
+    echo $FILES
 
-#for FILE in $FILES; do
-#
-#  $CASPER_BIN test $CASPER_OPTIONS \
-#        --basedir=$BASEDIR \
-#        --libdir=$SCRIPT_DIR/lib \
-#        --pre=$SCRIPT_DIR/lib/bootstrap.js \
-#        --post=$SCRIPT_DIR/lib/post.js \
-#        $FILE
-#
-#  if [[ $BREAK_ON_ERROR != 0 && $? != 0 ]]; then
-#    break;
-#  fi
-#
-#done
+fi
 
-  $CASPER_BIN test $CASPER_OPTIONS \
-        --basedir=$BASEDIR \
-        --libdir=$SCRIPT_DIR/lib \
-        --pre=$SCRIPT_DIR/lib/bootstrap.js \
-        --post=$SCRIPT_DIR/lib/post.js \
-        $FILES
+$CASPER_BIN test $CASPER_OPTIONS \
+    --basedir=$BASEDIR \
+    --libdir=$SCRIPT_DIR/lib \
+    --pre=$SCRIPT_DIR/lib/bootstrap.js \
+    --post=$SCRIPT_DIR/lib/post.js \
+    $FILES
