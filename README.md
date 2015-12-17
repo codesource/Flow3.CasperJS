@@ -18,6 +18,12 @@ npm install
 
 ### Setup the configuration
 
+Copy the ```config.sh.dist``` file to ```config.sh```, edit it to your needs and then make it an executable file:
+
+```
+chmod +x config.sh
+```
+
 Copy the ```options.js.dist``` file to ```options.js``` and edit it to your needs.
 
 ### Setup the runner script

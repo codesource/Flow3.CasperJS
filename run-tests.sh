@@ -9,22 +9,7 @@ SCRIPT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 # Calculate the base directory based on the location of the script.
 BASEDIR=$(realpath $SCRIPT_DIR/../../..)
 
-# You can override the base directory here if you whish
-#BASEDIR=../../Tests
-
-# When BREAK_ON_ERROR is set to 0, a failing test suite will not stop the tests.
-# Set it to 1 to stop on the first failing test suite.
-BREAK_ON_ERROR=1
-
-# The reg-exp used to search for test suites, should probably not be changed
-FILES_REGEXP=".*\/Packages\/Application\/.*Tests\/JavaScript\/Functional\/.*Test.js"
-
-# Casper executable
-CASPER_BIN=casperjs
-
-# Additional casper options
-#CASPER_OPTIONS="--concise"
-CASPER_OPTIONS=
+source $SCRIPT_DIR/config.sh
 
 # ----- There should be nothing to change below
 
