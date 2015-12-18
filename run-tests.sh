@@ -13,6 +13,8 @@ source $SCRIPT_DIR/config.sh
 
 # ----- There should be nothing to change below
 
+FLOW_COMMAND="$BASEDIR/flow"
+
 if [ -z "$1" ]; then
     FILES=$(find $BASEDIR -type f -regex "$FILES_REGEXP" | sort -V)
 else
@@ -24,13 +26,19 @@ else
     done
 fi
 
-
-php -S localhost:8888 "$SCRIPT_DIR/server.php" &
+# Start the php internal server
+echo "--- Starting the server"
+($PHP_BIN -S localhost:$SERVER_PORT "$SCRIPT_DIR/server.php" &>/dev/null) &
 PSID=$!
 
-FLOW_CONTEXT=Development/CasperJS ./flow doctrine:migrate --version=0
-FLOW_CONTEXT="Development/CasperJS" "$BASEDIR/flow" doctrine:migrate
+# Wipe the DB if needed
+if [ $WIPE_DB -ne 0 ]; then
+    echo "--- Recreating the DB"
+    FLOW_CONTEXT=Development/CasperJS $FLOW_COMMAND doctrine:migrate --version=0 &>/dev/null
+    FLOW_CONTEXT="Development/CasperJS" $FLOW_COMMAND doctrine:migrate &>/dev/null
+fi
 
+# Run the tests
 $CASPER_BIN test $CASPER_OPTIONS \
     --basedir=$BASEDIR \
     --libdir=$SCRIPT_DIR/lib \

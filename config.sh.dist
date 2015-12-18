@@ -12,3 +12,15 @@ CASPER_BIN=casperjs
 # Additional casper options
 #CASPER_OPTIONS="--concise --fail-fast"
 CASPER_OPTIONS=
+
+# Casper executable
+CASPER_BIN=casperjs
+
+# PHP executable
+PHP_BIN=php
+
+# Port for the internal PHP server
+SERVER_PORT=8888
+
+# If set to 0 the DB will be left untouched, otherwise it will be recreated
+WIPE_DB=0
