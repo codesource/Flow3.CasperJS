@@ -28,7 +28,7 @@ fi
 
 # Start the php internal server
 echo "--- Starting the server"
-($PHP_BIN -S localhost:$SERVER_PORT "$SCRIPT_DIR/server.php" &>/dev/null) &
+($PHP_BIN -S localhost:$SERVER_PORT "$SCRIPT_DIR/php-server/server.php" &>/dev/null) &
 PSID=$!
 
 # Wipe the DB if needed

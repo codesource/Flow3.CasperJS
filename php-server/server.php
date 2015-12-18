@@ -4,7 +4,6 @@ namespace FlowCasperJS;
 
 class System
 {
-
     /**
      * Sub context
      */
@@ -41,7 +40,7 @@ class System
             $_ENV['FLOW_CONTEXT'] :
             self::$CONTEXTS[0];
         $this->context = $mainContext . '/' . self::SUB_CONTEXT;
-        $this->rootPath = realpath(rtrim(__DIR__, '/') . '/../../..');
+        $this->rootPath = realpath(rtrim(__DIR__, '/') . '/../../../..');
         $this->webPath = $this->rootPath . '/Web';
 
         $this->updateServerSettings();
@@ -152,14 +151,17 @@ class MimeTypeResolver
         $file = fopen('/etc/mime.types', 'r');
         while (($line = fgets($file)) !== false) {
             $line = trim(preg_replace('/#.*/', '', $line));
-            if (!$line)
+            if (!$line) {
                 continue;
+            }
             $parts = preg_split('/\s+/', $line);
-            if (count($parts) == 1)
+            if (count($parts) == 1) {
                 continue;
+            }
             $type = array_shift($parts);
-            foreach ($parts as $part)
+            foreach ($parts as $part) {
                 $this->mimeTypes[$part] = $type;
+            }
         }
         fclose($file);
     }
@@ -246,35 +248,36 @@ class Router
             if ($mimeType) {
                 header('Content-Type: ' . $mimeType);
             }
-            if (in_array($this->mimeTimeResolver->getExtension($filename), array('css', 'js', 'jpg', 'png', 'gif'))) {
-                $offset = 86400 * 7;
-                $mtime = filemtime($filename);
-                $eTag = sprintf('%08x-%08x', crc32($filename), $mtime);
-                $gmt_mtime = gmdate('D, d M Y H:i:s', $mtime) . ' GMT';
-                if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && !empty($_SERVER['HTTP_IF_NONE_MATCH'])) {
-                    $tmp = explode(';', $_SERVER['HTTP_IF_NONE_MATCH']); // IE fix!
-                    if (!empty($tmp[0]) && strtotime($tmp[0]) == strtotime($gmt_mtime)) {
-                        header('HTTP/1.1 304 Not Modified');
-                        exit;
-                    }
-                }
-                if (isset($_SERVER['HTTP_IF_NONE_MATCH'])) {
-                    if (str_replace(array('\"', '"'), '', $_SERVER['HTTP_IF_NONE_MATCH']) == $eTag) {
-                        header('HTTP/1.1 304 Not Modified');
-                        exit;
-                    }
-                }
-                header('Age: 0');
-                header('Date: ' . gmdate("D, d M Y H:i:s") . " GMT");
-                header('Expires: ' . gmdate("D, d M Y H:i:s", time() + $offset) . " GMT");
-                header("Last-Modified: " . $gmt_mtime);
-                header('Cache-Control: public, max-age=' . $offset);
-                header('ETag: "' . $eTag . '"');
-            } else {
-                header('Expires: 0');
-                header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-                header('Pragma: public');
-            }
+            // TODO - Reactivate cache-related stuff if needed
+//            if (in_array($this->mimeTimeResolver->getExtension($filename), array('css', 'js', 'jpg', 'png', 'gif'))) {
+//                $offset = 86400 * 7;
+//                $mtime = filemtime($filename);
+//                $eTag = sprintf('%08x-%08x', crc32($filename), $mtime);
+//                $gmt_mtime = gmdate('D, d M Y H:i:s', $mtime) . ' GMT';
+//                if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && !empty($_SERVER['HTTP_IF_NONE_MATCH'])) {
+//                    $tmp = explode(';', $_SERVER['HTTP_IF_NONE_MATCH']); // IE fix!
+//                    if (!empty($tmp[0]) && strtotime($tmp[0]) == strtotime($gmt_mtime)) {
+//                        header('HTTP/1.1 304 Not Modified');
+//                        exit;
+//                    }
+//                }
+//                if (isset($_SERVER['HTTP_IF_NONE_MATCH'])) {
+//                    if (str_replace(array('\"', '"'), '', $_SERVER['HTTP_IF_NONE_MATCH']) == $eTag) {
+//                        header('HTTP/1.1 304 Not Modified');
+//                        exit;
+//                    }
+//                }
+//                header('Age: 0');
+//                header('Date: ' . gmdate("D, d M Y H:i:s") . " GMT");
+//                header('Expires: ' . gmdate("D, d M Y H:i:s", time() + $offset) . " GMT");
+//                header("Last-Modified: " . $gmt_mtime);
+//                header('Cache-Control: public, max-age=' . $offset);
+//                header('ETag: "' . $eTag . '"');
+//            } else {
+//                header('Expires: 0');
+//                header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+//                header('Pragma: public');
+//            }
             header('Content-Length: ' . filesize($filename));
             ob_clean();
             flush();
