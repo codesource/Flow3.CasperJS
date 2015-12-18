@@ -9,38 +9,24 @@ SCRIPT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 # Calculate the base directory based on the location of the script.
 BASEDIR=$(realpath $SCRIPT_DIR/../../..)
 
-# You can override the base directory here if you whish
-#BASEDIR=../../Tests
-
-# When BREAK_ON_ERROR is set to 0, a failing test suite will not stop the tests.
-# Set it to 1 to stop on the first failing test suite.
-BREAK_ON_ERROR=1
-
-# The reg-exp used to search for test suites, should probably not be changed
-FILES_REGEXP=".*\/Packages\/Application\/.*Tests\/JavaScript\/Functional\/.*Test.js"
-
-# Casper executable
-CASPER_BIN=casperjs
-
-# Additional casper options
-#CASPER_OPTIONS="--concise"
-CASPER_OPTIONS=
+source $SCRIPT_DIR/config.sh
 
 # ----- There should be nothing to change below
 
-FILES=$(find $BASEDIR -type f -regex "$FILES_REGEXP" | sort -V)
+if [ -z "$1" ]; then
+    FILES=$(find $BASEDIR -type f -regex "$FILES_REGEXP" | sort -V)
+else
+    # Read the files list from the parameters, expand the wildcards and filter them with the $FILES_REGEXP
+    TMP_FILES=($@)
+    TMP_FILES="${TMP_FILES[@]}"
+    for FILE in $TMP_FILES; do
+        FILES="$FILES $(find $FILE -type f -regex "$FILES_REGEXP" | sort -V)"
+    done
+fi
 
-for FILE in $FILES; do
-
-  $CASPER_BIN test $CASPER_OPTIONS \
-        --includes=$SCRIPT_DIR/lib/bootstrap.js \
-        --basedir=$BASEDIR \
-        --libdir=$SCRIPT_DIR/lib \
-        --post=$SCRIPT_DIR/lib/post.js \
-        $FILE
-
-  if [[ $BREAK_ON_ERROR != 0 && $? != 0 ]]; then
-    break;
-  fi
-
-done
+$CASPER_BIN test $CASPER_OPTIONS \
+    --basedir=$BASEDIR \
+    --libdir=$SCRIPT_DIR/lib \
+    --pre=$SCRIPT_DIR/lib/bootstrap.js \
+    --post=$SCRIPT_DIR/lib/post.js \
+    $FILES

@@ -22,5 +22,7 @@
     "node": true,
 
     // Custom Globals
-    "globals": {}
+    "globals": {
+        "casper": true
+    }
 }

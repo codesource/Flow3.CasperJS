@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# You can override the base directory here if you whish
+#BASEDIR=../../Tests
+
+# The reg-exp used to search for test suites, should probably not be changed
+FILES_REGEXP=".*\/Packages\/Application\/.*Tests\/JavaScript\/Functional\/.*Test.js"
+
+# Casper executable
+CASPER_BIN=casperjs
+
+# Additional casper options
+#CASPER_OPTIONS="--concise --fail-fast"
+CASPER_OPTIONS=
