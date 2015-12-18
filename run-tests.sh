@@ -34,8 +34,8 @@ PSID=$!
 # Wipe the DB if needed
 if [ $WIPE_DB -ne 0 ]; then
     echo "--- Recreating the DB"
-    FLOW_CONTEXT=Development/CasperJS $FLOW_COMMAND doctrine:migrate --version=0 &>/dev/null
-    FLOW_CONTEXT="Development/CasperJS" $FLOW_COMMAND doctrine:migrate &>/dev/null
+    FLOW_CONTEXT="$USE_FLOW_CONTEXT" $FLOW_COMMAND doctrine:migrate --version=0 &>/dev/null
+    FLOW_CONTEXT="$USE_FLOW_CONTEXT" $FLOW_COMMAND doctrine:migrate &>/dev/null
 fi
 
 # Run the tests

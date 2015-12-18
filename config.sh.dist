@@ -24,3 +24,6 @@ SERVER_PORT=8888
 
 # If set to 0 the DB will be left untouched, otherwise it will be recreated
 WIPE_DB=0
+
+# The Flow3 context to be used
+USE_FLOW_CONTEXT=Development/CasperJS
