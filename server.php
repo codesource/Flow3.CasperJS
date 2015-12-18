@@ -15,7 +15,7 @@ class System
      *
      * @var array
      */
-    protected static $CONTEXTS = array('Testing', 'Development', 'Production');
+    protected static $CONTEXTS = array('Development', 'Testing', 'Production');
 
     /**
      * @var string

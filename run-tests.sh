@@ -24,9 +24,18 @@ else
     done
 fi
 
+
+php -S localhost:8888 "$SCRIPT_DIR/server.php" &
+PSID=$!
+
+FLOW_CONTEXT=Development/CasperJS ./flow doctrine:migrate --version=0
+FLOW_CONTEXT="Development/CasperJS" "$BASEDIR/flow" doctrine:migrate
+
 $CASPER_BIN test $CASPER_OPTIONS \
     --basedir=$BASEDIR \
     --libdir=$SCRIPT_DIR/lib \
     --pre=$SCRIPT_DIR/lib/bootstrap.js \
     --post=$SCRIPT_DIR/lib/post.js \
     $FILES
+
+kill -9 $PSID
