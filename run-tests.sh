@@ -31,6 +31,8 @@ echo "--- Starting the server"
 ($PHP_BIN -S localhost:$SERVER_PORT "$SCRIPT_DIR/php-server/server.php" &>/dev/null) &
 PSID=$!
 
+echo "--- Server PID: $PSID"
+
 # Wipe the DB if needed
 if [ $WIPE_DB -ne 0 ]; then
     echo "--- Recreating the DB"
@@ -46,4 +48,6 @@ $CASPER_BIN test $CASPER_OPTIONS \
     --post=$SCRIPT_DIR/lib/post.js \
     $FILES
 
-kill -9 $PSID
+if [ $KILL_SERVER -ne 0 ]; then
+    kill -9 $PSID
+fi
