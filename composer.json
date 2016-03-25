@@ -1,0 +1,28 @@
+{
+  "name": "cdsrc/flow-casperjs",
+  "description": "Base infrastructure for CasperJs testing in Flow3",
+  "require": {
+    "typo3/flow": "*",
+
+    "jerome-breton/casperjs-installer": "*",
+    "jakoch/phantomjs-installer": "*",
+    "components/underscore": "*"
+  },
+
+  "config": {
+    "bin-dir": "bin"
+  },
+
+  "scripts": {
+    "post-install-cmd": [
+      "PhantomInstaller\\Installer::installPhantomJS"
+      "CasperJsInstaller\\Installer::install"
+    ],
+    "post-update-cmd": [
+      "PhantomInstaller\\Installer::installPhantomJS"
+      "CasperJsInstaller\\Installer::install"
+    ]
+  },
+
+  "bin": ["bin/cdsrc-flow-casperjs"]
+}
