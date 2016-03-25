@@ -4,7 +4,7 @@
   "require": {
     "typo3/flow": "*",
 
-    "jerome-breton/casperjs-installer": "*",
+    "jerome-breton/casperjs-installer": "dev-master",
     "jakoch/phantomjs-installer": "*",
     "components/underscore": "*"
   },
