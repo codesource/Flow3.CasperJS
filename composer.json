@@ -15,14 +15,11 @@
     "components/underscore": "*"
   },
 
-  "scripts": {
-    "post-install-cmd": [
-      "PhantomInstaller\\Installer::installPhantomJS"
-    ],
-    "post-update-cmd": [
-      "PhantomInstaller\\Installer::installPhantomJS"
-    ]
-  },
+  "bin": ["bin/cdsrc-flow-casperjs"],
 
-  "bin": ["bin/cdsrc-flow-casperjs"]
+  "autoload": {
+    "psr-4": {
+      "CDSRC\\Flow\\CasperJS\\": "src/"
+    }
+  }
 }
