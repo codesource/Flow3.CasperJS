@@ -15,18 +15,12 @@
     "components/underscore": "*"
   },
 
-  "config": {
-    "bin-dir": "bin"
-  },
-
   "scripts": {
     "post-install-cmd": [
-      "PhantomInstaller\\Installer::installPhantomJS",
-      "CasperJsInstaller\\Installer::install"
+      "PhantomInstaller\\Installer::installPhantomJS"
     ],
     "post-update-cmd": [
-      "PhantomInstaller\\Installer::installPhantomJS",
-      "CasperJsInstaller\\Installer::install"
+      "PhantomInstaller\\Installer::installPhantomJS"
     ]
   },
 
