@@ -16,7 +16,7 @@ class Installer
      */
     public static function install(Event $event)
     {
-        InstallerPhantomJS::installPhantomJS();
+        InstallerPhantomJS::installPhantomJS($event);
         self::installCasperJs($event);
     }
 
