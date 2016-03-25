@@ -15,11 +15,11 @@
 
   "scripts": {
     "post-install-cmd": [
-      "PhantomInstaller\\Installer::installPhantomJS"
+      "PhantomInstaller\\Installer::installPhantomJS",
       "CasperJsInstaller\\Installer::install"
     ],
     "post-update-cmd": [
-      "PhantomInstaller\\Installer::installPhantomJS"
+      "PhantomInstaller\\Installer::installPhantomJS",
       "CasperJsInstaller\\Installer::install"
     ]
   },
