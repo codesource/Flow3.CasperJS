@@ -1,6 +1,12 @@
 {
   "name": "cdsrc/flow-casperjs",
   "description": "Base infrastructure for CasperJs testing in Flow3",
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/jerome-breton/casperjs-installer.git"
+    }
+  ],
   "require": {
     "typo3/flow": "*",
 
