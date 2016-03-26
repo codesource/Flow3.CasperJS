@@ -19,7 +19,9 @@ CASPER_BIN=casperjs
 CASPER_OPTIONS=
 
 # Casper executable
-CASPER_BIN=$(readlink -f "$BASEDIR/bin/casperjs")
+CASPER_BIN="/usr/bin/env python "$(readlink -f "$BASEDIR/bin/casperjs")
+
+CASPER_DEBUG_MODE=0
 
 # Port for the standalone HTTP server
 HTTP_PORT=8888
@@ -50,6 +52,7 @@ ${BLUE}Arguments:
   ${GREEN}paths               ${NC}Optional path(s) where to search for casperjs tests files
 
 ${BLUE}Options
+  ${GREEN}--debug             ${NC}Run casperjs in debug mode
   ${GREEN}--casperjs-options  ${NC}Add casperjs options to call ('${GREY}behat --help${NC}' for more details)
   ${GREEN}--http-port         ${NC}Change HTTP standalone server listening port
   ${GREEN}--wipe-db           ${NC}Force database to reset his data
@@ -64,6 +67,9 @@ ${BLUE}Options
 REMAINING_PARAMETERS=
 for i in "$@"; do
     case "$i" in
+        --debug)
+            CASPER_DEBUG_MODE=1
+            ;;
         --casperjs-options=*)
             CASPER_OPTIONS="${i#*=}"
             ;;
@@ -107,8 +113,15 @@ if [ -n "$FILES" ]; then
 
     # Start the php internal server
     echo "--- Starting HTTP standalone server on port $HTTP_PORT"
+    if [[ -n $(lsof -i ":$HTTP_PORT" | grep "LISTEN") ]] ; then
+        echo "Unable to start HTTP server, $HTTP_PORT port is already used!";
+        exit 1;
+    fi
     FLOW_CONTEXT="$USE_FLOW_CONTEXT" "$FLOW_COMMAND" server:run --host=localhost --port="$HTTP_PORT" &> /dev/null &
-    HTTP_PSID=$!
+
+    # Give time to HTTP server to start
+    sleep 1
+    HTTP_PSID=`lsof -ti tcp:"$HTTP_PORT"`
     echo "--- Server PID: $HTTP_PSID"
 
     # Wipe the DB if needed
@@ -121,19 +134,26 @@ if [ -n "$FILES" ]; then
     # Dynamic Bootstrap
     TEMPORARY_DYNAMIC_BOOTSTRAP="$TEMP_DIR/casperjs-config-$RANDOM-$$-$RANDOM.js"
     echo "
-    use strict;
-    module.exports={baseUrl:'http:/localhost:$HTTP_PORT/'};
+    'use strict';
     var libdir = casper.cli.get('libdir');
-    var bootstrap = require(libdir + '/bootstrap');
+    var options = {baseUrl:'http:/localhost:$HTTP_PORT'};
+    var _ = require(libdir + '/../../../components/underscore/underscore');
+    var utils = require('utils');
+    var asserts = require(libdir + '/assertions');
     " > "$TEMPORARY_DYNAMIC_BOOTSTRAP"
+    if [ ${CASPER_DEBUG_MODE} -ne 0 ]; then
+        echo "require(libdir + '/casper-debug');" >> "$TEMPORARY_DYNAMIC_BOOTSTRAP"
+    fi
+    echo "casper.test.done();" >> "$TEMPORARY_DYNAMIC_BOOTSTRAP"
 
     # Run the tests
-    "$CASPER_BIN" test "$CASPER_OPTIONS" \
-        --basedir="$BASEDIR" \
-        --libdir="$SCRIPT_DIR/../lib" \
-        --pre="$TEMPORARY_DYNAMIC_BOOTSTRAP" \
-        --post="$SCRIPT_DIR/../lib/post.js" \
-        "$FILES"
+    FULLCALL="$CASPER_BIN test $CASPER_OPTIONS \
+        --basedir=$BASEDIR \
+        --libdir=$SCRIPT_DIR/../lib \
+        --pre=$TEMPORARY_DYNAMIC_BOOTSTRAP \
+        --post=$SCRIPT_DIR/../lib/post.js \
+        $FILES"
+    ($FULLCALL)
     EXIT_STATUS=$?
 
     # Let servers time to load
