@@ -29,6 +29,8 @@ class Installer
     {
         $binDir = $event->getComposer()->getConfig()->get('bin-dir');
         $suffix = strpos(strtolower(php_uname()), "win") !== false ? '.exe' : '';
-        symlink(__DIR__ . '/../../../../neuralys/casperjs/bin/casperjs' . $suffix, $binDir . '/casperjs' . $suffix);
+        if(!file_exists($binDir . '/casperjs')) {
+            symlink(__DIR__ . '/../../../../neuralys/casperjs/bin/casperjs' . $suffix, $binDir . '/casperjs' . $suffix);
+        }
     }
 }
