@@ -8,7 +8,7 @@
     }
   ],
   "require": {
-    "typo3/flow": "*",
+    "neos/flow": "*",
 
     "neuralys/casperjs": "*",
     "jakoch/phantomjs-installer": "*",
